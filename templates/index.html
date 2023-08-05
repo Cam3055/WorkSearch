@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Function Caller</title>
+</head>
+<body>
+    <h1>Python Function Call</h1>
+    <label for="inputString1">Enter String 1:</label>
+    <input type="text" id="inputString1" placeholder="Company Name">
+    <label for="inputString2">Enter String 2:</label>
+    <input type="text" id="inputString2" placeholder="Empolyee Name">
+    <button onclick="calculate()">Calculate</button>
+    <p id="result"></p>
+
+    <script>
+        function calculate() {
+            const inputString1 = document.getElementById('inputString1').value;
+            const inputString2 = document.getElementById('inputString2').value;
+
+            fetch('/h', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ string1: inputString1, string2: inputString2 }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Result: ${data.result}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+    <title>Upload CSV</title>
+    <h1>Upload your CSV file</h1>
+    <form method=post enctype=multipart/form-data action="/h">
+    <input type=file name=file>
+    <input type=submit value=Upload>
+    </form>
+    </body>
+    </html>
