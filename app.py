@@ -16,11 +16,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/h', methods=['GET','POST'])  # Ensure the route supports POST requests
-def calculate():
-    data = request.json
-    companyname = data.get('string1')
-    employeename = data.get('string2')
+
     
 
 # Get the uploaded files
@@ -47,7 +43,7 @@ def linkSearchList(driver,searchList):
     searchResult = []
     for i in searchList:
         driver,result =WebSearch.linkSearch(driver,i[0], i[1])
-        time.sleep(10)
+        time.sleep(3)
         if result == True:
             searchResult.append([i[0],i[1],"Record Found"])
         else:

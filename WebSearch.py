@@ -55,6 +55,7 @@ def linkLoginInit(driver):
 def linkSearch(driver,company_name,employee_name):
     # Search for the company
     search_box = driver.find_element(By.XPATH, '//input[contains(@placeholder, "Search")]')
+    search_box.clear()
     search_box.send_keys(employee_name," ",company_name)
     search_box.send_keys(Keys.RETURN)
 
