@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-
+import time
 import argparse
 
 
@@ -67,6 +67,8 @@ def linkSearch(driver,company_name,employee_name):
 
         # Click on the person's profile to check their employment information
         person_profile.click()
+        time.sleep(1)
+        url=driver.current_url
 
         # Check if the company name is mentioned on the person's profile
         employment_info = driver.find_element(By.XPATH, f'//span[contains(text(), "{company_name}")]')
@@ -76,9 +78,9 @@ def linkSearch(driver,company_name,employee_name):
 
     # Print the result
     if person_works_at_company:
-        return driver, True
+        return driver, True , url
     else:
-        return driver, False
+        return driver, False, ""
 #Test
 
 
@@ -88,22 +90,23 @@ def linkSearch(driver,company_name,employee_name):
 
 
 def main():
-    # Create an argument parser
-    parser = argparse.ArgumentParser(description='JobSearch.')
+    # # Create an argument parser
+    # parser = argparse.ArgumentParser(description='JobSearch.')
     
-    # Add arguments with desired variable names and types
-    parser.add_argument('--employee_name', type=str, default='James Date', help='Name of employee.')
-    parser.add_argument('--company_name', type=str, default='Babcock', help='Name of company.')
-    # parser.add_argument('--flag', action='store_true', help='Flag argument.')
+    # # Add arguments with desired variable names and types
+    # parser.add_argument('--employee_name', type=str, default='James Date', help='Name of employee.')
+    # parser.add_argument('--company_name', type=str, default='Babcock', help='Name of company.')
+    # # parser.add_argument('--flag', action='store_true', help='Flag argument.')
 
-    # Parse the command-line arguments
-    args = parser.parse_args()
+    # # Parse the command-line arguments
+    # args = parser.parse_args()
 
-    # Access the variables using the argument names defined above
-    employee_name = args.employee_name
-    company_name = args.company_name
-
-    print(linkQuickSearch(company_name,employee_name))
+    # # Access the variables using the argument names defined above
+    # employee_name = args.employee_name
+    # company_name = args.company_name
+    driver = linkDriverinit()
+    linkLoginInit(driver)
+    print(linkSearch(driver,"Watson-Marlow","Dominic Anderson"))
    
 
 if __name__ == '__main__':
