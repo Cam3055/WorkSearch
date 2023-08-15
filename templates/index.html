@@ -1,44 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Python Function Caller</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <title>Recruitment Eye</title>
 </head>
+
 <body>
-    <h1>Python Function Call</h1>
-    <label for="inputString1">Company Name:</label>
-    <input type="text" id="inputString1" placeholder="Company Name">
-    <label for="inputString2">Employee Name:</label>
-    <input type="text" id="inputString2" placeholder="Empolyee Name">
-    <button onclick="calculate()">Calculate</button>
-    <p id="result"></p>
 
-    <script>
-        function calculate() {
-            const inputString1 = document.getElementById('inputString1').value;
-            const inputString2 = document.getElementById('inputString2').value;
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Recruitment Eye</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-            fetch('/h', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ string1: inputString1, string2: inputString2 }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('result').innerText = `Result: ${data.result}`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    </script>
+    <header class="hero-section">
+        <div class="container text-center">
+            <h1>Welcome to Recruitment Eye</h1>
+            <p>See the future of recruitment unfold.</p>
+            <button class="btn btn-outline-light">Learn More</button>
+        </div>
+    </header>
 
-    <title>Upload CSV</title>
-    <h1>Upload your CSV file</h1>
-    <form method=post enctype=multipart/form-data action="/">
-    <input type=file name=file>
-    <input type=submit value=Upload>
-    </form>
-    </body>
-    </html>
+    <section id="services" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Services</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path_to_image.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">AI Matching</h5>
+                            <p class="card-text">Utilize the power of AI to match the right candidates.</p>
+                            <a href="#" class="btn btn-dark">More Info</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add similar blocks for other services -->
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login to Recruitment Eye</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Login</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Contact Us</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-black text-gray-500 py-3">
+        <div class="container text-center">
+            <p>&copy; 2023 Recruitment Eye. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
