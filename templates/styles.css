@@ -30,3 +30,57 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
+.modal-content {
+    background-color: #222;
+    color: #ddd;
+    border: none;
+}
+
+.btn-close {
+    background-color: #555;
+    opacity: 1;
+}
+
+.btn-close:hover {
+    background-color: #777;
+}
+
+.bg-dark {
+    background-color: #121212;
+}
+
+.card {
+    background-color: #222;
+    color: #ddd;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.form-control {
+    background-color: #333;
+    color: #ccc;
+    border: none;
+    border-radius: 0;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+.brand-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;  /* Using a lighter weight for a sleek look */
+    font-size: calc(40px * 0.5);  
+    margin-left: 10px;
+    align-self: center;
+}
+
+/* You can also set Roboto as the default font for the whole website */
+body {
+    font-family: 'Roboto', sans-serif;
+}
