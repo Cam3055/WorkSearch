@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
-
+from flask import Flask, render_template, request, Response
+from waitress import serve
 import WebSearch
 import numpy as np
 import time
@@ -68,5 +68,5 @@ def download():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)
+    serve(app,host='0.0.0.0',port=80)
     # app.run(port=5000,debug=True)
