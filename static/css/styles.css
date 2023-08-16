@@ -84,3 +84,9 @@ body {
 body {
     font-family: 'Roboto', sans-serif;
 }
+
+.navbar-logo {
+    height: 40px; /* Adjust this to your preference */
+    width: 40px; /* Ensuring 1:1 aspect ratio as per previous request */
+    margin-right: 10px; /* Some spacing between the logo and the company name */
+}
