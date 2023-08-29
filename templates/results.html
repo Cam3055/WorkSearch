@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Table</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px 12px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Upload your CSV file</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card bg-black p-4">
+                    <form method="post" enctype="multipart/form-data" action="/resultSearch">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Select a CSV file</label>
+                            <input type="file" class="form-control" name="file" id="file" required>
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" value="Upload" class="btn btn-outline-light">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>Employee Name</th>
+                <th>Record</th>
+                <th>URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by SocketIO and JS -->
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // const io = require("socket.io")(httpServer, {
+            //     cors: {
+            //         origin: "http://127.0.0.1:80",
+            //         methods: ["GET", "POST"]
+            //     }});
+            
+            var socket = io.connect('http://127.0.0.1:80/update_table');
+            socket.on('update_table', function(data) {
+                const tableBody = document.querySelector("#dataTable tbody");
+                
+                const row = document.createElement("tr");
+
+                const companyNameCell = document.createElement("td");
+                companyNameCell.textContent = data.company_name;
+                row.appendChild(companyNameCell);
+
+                const employeeNameCell = document.createElement("td");
+                employeeNameCell.textContent = data.employee_name;
+                row.appendChild(employeeNameCell);
+
+                const recordCell = document.createElement("td");
+                recordCell.textContent = data.record;
+                row.appendChild(recordCell);
+
+                const urlCell = document.createElement("td");
+                urlCell.textContent = data.url;
+                row.appendChild(urlCell);
+
+                tableBody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
