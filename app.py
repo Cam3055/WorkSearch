@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, Response, redirect, url_for, session, flash, jsonify
 import mysql.connector
-from waitress import serve
 import WebSearch
 import numpy as np
 import time
@@ -10,6 +9,16 @@ from flask_socketio import SocketIO, emit
 import os
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+
+class listManager:
+    def __init__(self):
+        self.data_list = []
+        self.submitted = False
+
+    
+
+list_manager = listManager()
 
 
 
@@ -116,31 +125,6 @@ def login():
     return render_template('dashboard.html')
 
 
-
-# @app.route('/signup', methods=['GET', 'POST'])
-# def signup():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-
-#         connection = get_db_connection()
-#         if connection:
-#             cursor = connection.cursor(dictionary=True)
-#             try:
-#                 cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
-#                 connection.commit()
-#                 cursor.close()
-#                 connection.close()
-#                 flash("Account created successfully!", "success")
-#                 return redirect(url_for('login'))
-#             except mysql.connector.Error as err:
-#                 flash(f"Error: {err}", "danger")
-#                 return redirect(url_for('signup'))
-
-#     return render_template('signup.html')
-
-
-
 @app.route('/dashboard')
 def dashboard():
     if 'loggedin' in session:
@@ -159,7 +143,7 @@ def logout():
 def resultPage():
     return render_template('results.html')
 
-@socketio.on('message', namespace='/update_table')
+# @socketio.on('message', namespace='/update_table')
 
 
 
@@ -173,20 +157,23 @@ def populate():
         csv_reader = csv.reader(io.StringIO(file_content))
         searchList = [row for row in csv_reader]
         searchList = searchList[1:]
-        driver = linkStartUp()
-        # time.sleep(20)
-        for i in searchList:
-            driver,data= linkSearchEmployee(driver,i[0],i[1])
-            socketio.send('update_table', {
-            'company_name': data[0],
-            'employee_name': data[1],
-            'record': data[2],
-            'url': data[3]})
+        list_manager.data_list=searchList
+        list_manager.submitted=True
     return render_template('results.html')
         
 
+@socketio.on('request-data')
+def test_connect():
+    if list_manager.submitted:
+        list_manager.submitted = False
+        driver = linkStartUp()
+        for i in list_manager.data_list:
+            driver,sdata=linkSearchEmployee(driver,i[0],i[1])
+            data = [{'company_name': sdata[0],'employee_name': sdata[1],'record': sdata[2],'url': sdata[3]}]
+            emit('update_table', {'data': data})
+            # socketio.sleep(5)
 
 
 if __name__ == '__main__':
-#     serve(app,host='0.0.0.0',port=80)
-    socketio.run(app,host='127.0.0.1',port=80,debug=True)
+    # serve(app,host='0.0.0.0',port=80)
+    socketio.run(app,host='0.0.0.0',port=80,debug=True)

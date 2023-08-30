@@ -52,37 +52,17 @@
     </table>
 
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // const io = require("socket.io")(httpServer, {
-            //     cors: {
-            //         origin: "http://127.0.0.1:80",
-            //         methods: ["GET", "POST"]
-            //     }});
-            
-            var socket = io.connect('http://127.0.0.1:80/update_table');
-            socket.on('update_table', function(data) {
-                const tableBody = document.querySelector("#dataTable tbody");
-                
-                const row = document.createElement("tr");
-
-                const companyNameCell = document.createElement("td");
-                companyNameCell.textContent = data.company_name;
-                row.appendChild(companyNameCell);
-
-                const employeeNameCell = document.createElement("td");
-                employeeNameCell.textContent = data.employee_name;
-                row.appendChild(employeeNameCell);
-
-                const recordCell = document.createElement("td");
-                recordCell.textContent = data.record;
-                row.appendChild(recordCell);
-
-                const urlCell = document.createElement("td");
-                urlCell.textContent = data.url;
-                row.appendChild(urlCell);
-
-                tableBody.appendChild(row);
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.emit('request-data');
+        socket.on('update_table', function(data) {
+            console.log("Received data:", data);
+            var tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+            data.data.forEach(function(rowData) {
+                var newRow = tableBody.insertRow();
+                newRow.insertCell(0).innerHTML = rowData.company_name;
+                newRow.insertCell(1).innerHTML = rowData.employee_name;
+                newRow.insertCell(2).innerHTML = rowData.record;
+                newRow.insertCell(3).innerHTML = rowData.url;
             });
         });
     </script>

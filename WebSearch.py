@@ -47,10 +47,11 @@ def linkLoginInit(driver):
     driver.implicitly_wait(10)
 
     # Verify if login was successful
-    if driver.current_url == 'https://www.linkedin.com/feed/':
-        return True
-    else:
-        return False
+    while True:    
+        if driver.current_url == 'https://www.linkedin.com/feed/':
+            break
+    
+    return True
 
 def linkSearch(driver,company_name,employee_name):
     # Search for the company
