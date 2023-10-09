@@ -42,12 +42,12 @@
     </style>
 </head>
 <body>
-    <!-- <div class="container py-5">
+    <div class="container py-5">
         <h1 class="text-center mb-4">Upload your CSV file</h1>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card p-4">
-                    <form method="post" enctype="multipart/form-data" action="/resultSearch">
+                    <form method="post" enctype="multipart/form-data" action="/result">
                         <div class="mb-3">
                             <label for="file" class="form-label">Select a CSV file</label>
                             <input type="file" class="form-control" name="file" id="file" required>
@@ -59,34 +59,5 @@
                 </div>
             </div>
         </div>
-    </div> -->
-    <table id="dataTable" class="table table-dark table-striped">
-        <thead>
-            <tr>
-                <th>Company Name</th>
-                <th>Employee Name</th>
-                <th>Record</th>
-                <th>URL</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be inserted here by SocketIO and JS -->
-        </tbody>
-    </table>
-    <script type="text/javascript">
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.emit('request-data');
-        socket.on('update_table', function(data) {
-            console.log("Received data:", data);
-            var tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
-            data.data.forEach(function(rowData) {
-                var newRow = tableBody.insertRow();
-                newRow.insertCell(0).innerHTML = rowData.company_name;
-                newRow.insertCell(1).innerHTML = rowData.employee_name;
-                newRow.insertCell(2).innerHTML = rowData.record;
-                newRow.insertCell(3).innerHTML = rowData.url;
-            });
-        });
-    </script>
+    </div>
 </body>
-</html>

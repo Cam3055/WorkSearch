@@ -139,9 +139,14 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route("/results", methods=['GET'])
+@app.route("/upload", methods=['GET'])
 def resultPage():
-    return render_template('results.html')
+    return render_template('upload.html')
+
+
+@app.route("/nicktest", methods=['GET'])
+def nickpage():
+    return render_template('upload.html')
 
 # @socketio.on('message', namespace='/update_table')
 
@@ -149,7 +154,7 @@ def resultPage():
 
 
 
-@app.route("/resultSearch", methods=['POST'])
+@app.route("/result", methods=['POST'])
 def populate():
     uploaded_file = request.files['file']
     if uploaded_file.filename != '':
@@ -166,14 +171,20 @@ def populate():
 def test_connect():
     if list_manager.submitted:
         list_manager.submitted = False
+        searchList =""
         driver = linkStartUp()
         for i in list_manager.data_list:
             driver,sdata=linkSearchEmployee(driver,i[0],i[1])
+            searchList = (searchList+str(sdata[0])+','+str(sdata[1])+','+str(sdata[2])+','+str(sdata[3])+"\n")
             data = [{'company_name': sdata[0],'employee_name': sdata[1],'record': sdata[2],'url': sdata[3]}]
             emit('update_table', {'data': data})
             # socketio.sleep(5)
+    return Response(searchList,
+        mimetype="text/csv",
+        headers={"Content-disposition":
+                 "attachment; filename=employeecheck.csv"})
 
 
 if __name__ == '__main__':
     # serve(app,host='0.0.0.0',port=80)
-    socketio.run(app,host='0.0.0.0',port=80,debug=True)
+    socketio.run(app,host='127.0.0.1',port=80,debug=True)
