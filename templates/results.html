@@ -75,7 +75,7 @@
     </table>
     <script type="text/javascript">
         var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.emit('request-data');
+        socket.emit('zenoh-request-data');
         socket.on('update_table', function(data) {
             console.log("Received data:", data);
             var tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];

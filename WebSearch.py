@@ -18,7 +18,7 @@ def linkDriverinit():
 
     options.add_argument("--start-maximized")  # Maximize the browser window
     options.add_argument("--disable-infobars")  # Disable the "Chrome is being controlled by automated software" message
-
+    options.add_argument('--ignore-certificate-errors-spki-list')
     # Specify the path to the ChromeDriver executable
     service = Service(chrome_driver_path)
 

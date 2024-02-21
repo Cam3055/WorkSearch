@@ -5,7 +5,7 @@ import numpy as np
 import time
 import csv
 import io
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 import os
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -151,9 +151,6 @@ def nickpage():
 # @socketio.on('message', namespace='/update_table')
 
 
-
-
-
 @app.route("/result", methods=['POST'])
 def populate():
     uploaded_file = request.files['file']
@@ -177,12 +174,35 @@ def test_connect():
             driver,sdata=linkSearchEmployee(driver,i[0],i[1])
             searchList = (searchList+str(sdata[0])+','+str(sdata[1])+','+str(sdata[2])+','+str(sdata[3])+"\n")
             data = [{'company_name': sdata[0],'employee_name': sdata[1],'record': sdata[2],'url': sdata[3]}]
-            emit('update_table', {'data': data})
+            socketio.emit('update_table', {'data': data})
             # socketio.sleep(5)
     return Response(searchList,
         mimetype="text/csv",
         headers={"Content-disposition":
                  "attachment; filename=employeecheck.csv"})
+
+
+
+import zenoh
+@socketio.on('zenoh-request-data')
+def test_connect():
+    if list_manager.submitted:
+        list_manager.submitted = False
+        session = zenoh.open()
+        key = "search/vm1"
+        pub = session.declare_publisher(key)
+        pub.put(list_manager.data_list)
+        # searchList =""
+        # for i in list_manager.data_list:
+        #     driver,sdata=linkSearchEmployee(driver,i[0],i[1])
+        #     searchList = (searchList+str(sdata[0])+','+str(sdata[1])+','+str(sdata[2])+','+str(sdata[3])+"\n")
+        #     data = [{'company_name': sdata[0],'employee_name': sdata[1],'record': sdata[2],'url': sdata[3]}]
+        #     emit('update_table', {'data': data})
+            # socketio.sleep(5)
+    # return Response(searchList,
+    #     mimetype="text/csv",
+    #     headers={"Content-disposition":
+    #              "attachment; filename=employeecheck.csv"})
 
 
 if __name__ == '__main__':
