@@ -3,7 +3,7 @@ import json
 import numpy as np
 import WebSearch
 import time
-from app import socketio
+
 
 def linkStartUp():
     driver = WebSearch.linkDriverinit()
@@ -53,10 +53,12 @@ def listener(sample,driver):
         searchList=""
         for i in list_to_search:
             driver,sdata=linkSearchEmployee(driver,i[0],i[1])
-            searchList = (searchList+str(sdata[0])+','+str(sdata[1])+','+str(sdata[2])+','+str(sdata[3])+"\n")
+            # searchList = (searchList+str(sdata[0])+','+str(sdata[1])+','+str(sdata[2])+','+str(sdata[3])+"\n")
             data = [{'company_name': sdata[0],'employee_name': sdata[1],'record': sdata[2],'url': sdata[3]}]
-            socketio.emit('update_table', {'data': data})
-        list_to_search =""
+            session = zenoh.open()
+            key = "vm1/answer"
+            pub = session.declare_publisher(key)
+            pub.put(data)
         # Print or use the processed data as needed
         print("Processed data")
 
@@ -66,7 +68,7 @@ def listener(sample,driver):
 def main():  
     session = zenoh.open()
     # Define the Zenoh query for your data
-    key = "search/vm1"
+    key = "vm1/search"
     # Create a Zenoh workspace
     driver = linkStartUp()
     sub = session.declare_subscriber(key,lambda sample:listener(sample,driver))

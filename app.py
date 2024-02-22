@@ -184,25 +184,28 @@ def test_connect():
 
 
 import zenoh
+import json
 @socketio.on('zenoh-request-data')
 def test_connect():
-    if list_manager.submitted:
-        list_manager.submitted = False
-        session = zenoh.open()
-        key = "search/vm1"
-        pub = session.declare_publisher(key)
-        pub.put(list_manager.data_list)
-        # searchList =""
-        # for i in list_manager.data_list:
-        #     driver,sdata=linkSearchEmployee(driver,i[0],i[1])
-        #     searchList = (searchList+str(sdata[0])+','+str(sdata[1])+','+str(sdata[2])+','+str(sdata[3])+"\n")
-        #     data = [{'company_name': sdata[0],'employee_name': sdata[1],'record': sdata[2],'url': sdata[3]}]
-        #     emit('update_table', {'data': data})
-            # socketio.sleep(5)
-    # return Response(searchList,
-    #     mimetype="text/csv",
-    #     headers={"Content-disposition":
-    #              "attachment; filename=employeecheck.csv"})
+    def listener(data):
+        print('Data Recieved')
+        data=data.payload
+        data=data.decode('utf-8')
+        data = json.loads(data)
+    # print('update_table', {'data': data})
+        socketio.emit('update_table', {'data': data})
+
+
+    session= zenoh.open()
+    key = "vm1/search"
+    pub = session.declare_publisher(key)
+    pub.put(list_manager.data_list)
+    key = "vm1/answer"
+    sub = session.declare_subscriber(key,listener)
+    while True:
+        pass
+
+
 
 
 if __name__ == '__main__':
